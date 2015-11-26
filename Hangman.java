@@ -1,9 +1,21 @@
 import java.util.Scanner;
 
 public class Hangman {
+
+  public static boolean validateChar(String guessedChar){
+    if (guessedChar.length() != 1) {
+      System.out.println("Endast en bokstav!");
+      return false;
+    } else if (Character.isDigit(guessedChar.charAt(0))) {
+      System.out.println("Inga siffror!");
+      return false;
+    }
+      return true;
+  }
+
 	public static void main(String[] args) {
 		Scanner keyboard = new Scanner(System. in );
-		String secretword = "nationalencyklopedin".toUpperCase();
+		String secretword = "nisse".toUpperCase();
 		//Missade gissningar läggs till i denna sträng
 		String guessedChars = "Du har gissat på:";
 		String secretword_blank = secretword.toLowerCase().replaceAll(".", "_");
@@ -12,7 +24,6 @@ public class Hangman {
 		int limitguess = 10;
 		String guessedChar = "";
 
-		//Ta in input ifrån användare och validera (längden får inte överstiga 1 och det får inte vara en siffra)
 		while (guess < limitguess) {
 			//kontrollera om du har vunnit, därefter bryt ut ur while loopen
 			if (!secretword_blank.contains("_")) {
@@ -21,12 +32,9 @@ public class Hangman {
 			}
 
 			System.out.println("Gissa en bokstav ?");
+      //Ta in input ifrån användare och validera (längden får inte överstiga 1 och det får inte vara en siffra)
 			guessedChar = keyboard.next().trim().toUpperCase();
-			if (guessedChar.length() != 1) {
-				System.out.println("Endast en bokstav!");
-			} else if (Character.isDigit(guessedChar.charAt(0))) {
-				System.out.println("Inga siffror!");
-			} else { //Input är OK
+      if(validateChar(guessedChar)){
 				if (secretword.contains(guessedChar)) {
 					//Iterera över secretword och markera där bokstaven finns
 					for (int i = 0; i < secretword.length(); i++) {
@@ -44,17 +52,18 @@ public class Hangman {
 					guessedChars = guessedChars + guessedChar + " ";
 					guess = guess + 1;
 				}
+      }
 				int guessesleft = (limitguess - guess);
 				System.out.println("---------------------------------------------");
 				System.out.println(secretword_blank.replaceAll(".(?!$)", "$0 "));
 				System.out.println("Gissningar kvar:" + guessesleft);
 				System.out.println(guessedChars);
 
+        //kontrollera om du har förlorat
+    		if (guess >= limitguess) {
+    			System.out.println("Tyvärr så blir du hängd nu!");
+    		}
 			}
 		}
-		//kontrollera om du har förlorat
-		if (guess >= limitguess) {
-			System.out.println("Tyvärr så blir du hängd nu!");
-		}
+
 	}
-}
