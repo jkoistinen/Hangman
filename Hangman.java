@@ -3,11 +3,11 @@ import java.util.Scanner;
 public class Hangman {
 
   public static boolean validateChar(String guessedChar){
-    if (guessedChar.length() != 1) {
-      System.out.println("Endast en bokstav!");
-      return false;
-    } else if (Character.isDigit(guessedChar.charAt(0))) {
+    if (Character.isDigit(guessedChar.charAt(0))) {
       System.out.println("Inga siffror!");
+      return false;
+    } else if (guessedChar.length() != 1) {
+      System.out.println("Endast en bokstav!");
       return false;
     }
       return true;
